@@ -15,17 +15,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jt222ii/lamp-prototypes.git"
+    "url": "git+https://github.com/TimeWarriors/LightHandler.git"
   },
   "keywords": [
-    "prototype",
+    "lights",
     "lamps",
-    "hohohaha"
+    "philips hue",
+    "blink"
   ],
   "author": "TimeWarriors",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jt222ii/lamp-prototypes/issues"
+    "url": "https://github.com/TimeWarriors/LightHandler.git/issues"
   },
-  "homepage": "https://github.com/jt222ii/lamp-prototypes#readme"
+  "homepage": "https://github.com/TimeWarriors/LightHandler.git#readme"
 }
