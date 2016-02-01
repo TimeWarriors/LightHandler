@@ -1,29 +1,31 @@
 {
-  "name": "lighthandler",
+  "name": "lamp-prototypes",
   "version": "1.0.0",
-  "description": "handles different lights",
-  "main": "index.js",
+  "description": "prototypes",
+  "main": "app.js",
+  "dependencies": {
+    "node-blink1": "^0.2.2",
+    "node-hid": "git+https://github.com/lorenc-tomasz/node-hid.git#package",
+    "promise": "^7.1.1",
+    "requirejs": "^2.1.22"
+  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TimeWarriors/LightHandler.git"
+    "url": "git+https://github.com/jt222ii/lamp-prototypes.git"
   },
   "keywords": [
-    "lights",
-    "light",
-    "color",
-    "philips",
-    "hue",
-    "blink(1)",
-    "blink",
-    "mk2"
+    "prototype",
+    "lamps",
+    "hohohaha"
   ],
   "author": "TimeWarriors",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/TimeWarriors/LightHandler/issues"
+    "url": "https://github.com/jt222ii/lamp-prototypes/issues"
   },
-  "homepage": "https://github.com/TimeWarriors/LightHandler#readme"
+  "homepage": "https://github.com/jt222ii/lamp-prototypes#readme"
 }
