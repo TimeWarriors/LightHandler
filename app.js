@@ -25,7 +25,12 @@ try {
 
     changeColor( 1000, 0, 255, 0); 
 
-    
+    setTimeout(() => {
+       changeColor( 1000, 255, 255, 255); 
+    }, 2000);
+    setTimeout(() => {
+       changeColor( 1000, 0, 0, 0); 
+    }, 4000);
     setTimeout(() => {
        turnOff(blink1);
     }, 5000);
