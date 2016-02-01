@@ -1,0 +1,29 @@
+{
+  "name": "lighthandler",
+  "version": "1.0.0",
+  "description": "handles different lights",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TimeWarriors/LightHandler.git"
+  },
+  "keywords": [
+    "lights",
+    "light",
+    "color",
+    "philips",
+    "hue",
+    "blink(1)",
+    "blink",
+    "mk2"
+  ],
+  "author": "TimeWarriors",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TimeWarriors/LightHandler/issues"
+  },
+  "homepage": "https://github.com/TimeWarriors/LightHandler#readme"
+}
