@@ -21,6 +21,9 @@ try {
     setTimeout(() => {
        turnOff("20005E32");
     }, 5000);
+    setTimeout(() => {
+       warningFlash("20005E32");
+    }, 6000);
     
 
 } catch(err) {
@@ -36,7 +39,7 @@ function changeColor(lampId, millisecondsToChange, r, g, b){
         blink1.fadeToRGB(millisecondsToChange, r, g, b);
         blink1.close();
     }
-    else
+    else //här ska den köra med en else if mot philips hue istället
     {
         console.log("ingen lampa");
         
@@ -50,4 +53,17 @@ function turnOff(lampId){
         blink1.off()
         blink1.close();
     }
+    //här ska den köra med en else if mot philips hue istället
+}
+function warningFlash(lampId){
+    let blinkDevices = Blink1.devices();
+    if(blinkDevices.indexOf(lampId) != -1)
+    {
+        blink1 = new Blink1(lampId);
+        blink1.writePatternLine(200, 255, 0, 0, 0);
+        blink1.writePatternLine(200, 0, 0, 0, 1);
+        blink1.playLoop(0, 1, 10);
+        blink1.close();
+    }
+    //här ska den köra med en else if mot philips hue istället
 }
