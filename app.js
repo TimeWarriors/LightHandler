@@ -12,21 +12,10 @@ try {
     var minutes = date.getMinutes();
     console.log(hours + " : " + minutes);
     //getHueLamps();
-    turnOff("00:17:88:01:10:51:a6:fe-0b");
-    //changeColor("00:17:88:01:10:51:a6:fe-0b", 1000, 0, 255, 0); 
-
-//    setTimeout(() => {
-//       changeColor("20005E32", 1000, 255, 255, 255); 
-//    }, 2000);
-//    setTimeout(() => {
-//       changeColor("20005E32", 1000, 0, 0, 0); 
-//    }, 4000);
-//    setTimeout(() => {
-//       turnOff("20005E32");
-//    }, 5000);
-//    setTimeout(() => {
-//       warningFlash("20005E32");
-//    }, 6000);
+    //turnOff("00:17:88:01:10:51:a6:fe-0b");
+    changeColor("adsjhsadjhadskjasdhk", 0, 0, 255);
+    //changeColor("00:17:88:01:10:51:a6:fe-0b", 0, 255, 0); 
+    //changeColor("20005E32", 255, 255, 255, 1000); 
     
 
 } catch(err) {
@@ -44,7 +33,8 @@ function getHueLamps(){ //returnerar ingenting just nu
     });
 }
 
-function changeColor(lampId, millisecondsToChange, r, g, b){
+function changeColor(lampId, r, g, b, millisecondsToChange){
+    millisecondsToChange = millisecondsToChange || 1000;
     let blinkDevices = Blink1.devices();
     if(blinkDevices.indexOf(lampId) != -1)
     {
@@ -54,7 +44,25 @@ function changeColor(lampId, millisecondsToChange, r, g, b){
     }
     else //här ska den köra med en else if mot philips hue istället
     {
-        
+        var X = r * 0.664511 + g * 0.154324 + b * 0.162028;
+        var Y = r * 0.283881 + g * 0.668433 + b * 0.047685;
+        var Z = r * 0.000088 + g * 0.072310 + b * 0.986039;
+        var x = X / (X + Y + Z);
+        var y = Y / (X + Y + Z);
+        var bodyMessage = JSON.stringify({
+            "xy": [x,y]
+        })
+        var headers = {
+            'Content-Type': 'application/json',
+            'Content-Length': bodyMessage.length
+        };
+        var options = {
+            host: config.hueIp,
+            path: "/api/"+config.userName+"/lights/1/state",
+            method: 'PUT',
+            headers: headers
+        };
+        http.request(options).write(bodyMessage);
     }
 }
 function turnOff(lampId){
@@ -66,8 +74,6 @@ function turnOff(lampId){
         blink1.close();
     }
     else{
-        let req;
-
         var bodyMessage = JSON.stringify({
             "on":false
         })
@@ -81,7 +87,6 @@ function turnOff(lampId){
             method: 'PUT',
             headers: headers
         };
-        var link = config.hueIp+"/api/"+config.userName+"/lights/1/state";
         http.request(options).write(bodyMessage);
     }
     //här ska den köra med en else if mot philips hue istället
