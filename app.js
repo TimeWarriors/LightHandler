@@ -13,7 +13,7 @@ try {
     console.log(hours + " : " + minutes);
     //getHueLamps();
     //turnOff("00:17:88:01:10:51:a6:fe-0b");
-    changeColor("adsjhsadjhadskjasdhk", 0, 0, 255);
+    changeColor("fddfd", 255, 0, 0);
     //changeColor("00:17:88:01:10:51:a6:fe-0b", 0, 255, 0); 
     //changeColor("20005E32", 255, 255, 255, 1000); 
     
