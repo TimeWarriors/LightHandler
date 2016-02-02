@@ -6,14 +6,9 @@ let blink1;
 
 
 try {
-    console.log(config.userName);
-    var date = new Date();
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    console.log(hours + " : " + minutes);
     //getHueLamps();
     //turnOff("00:17:88:01:10:51:a6:fe-0b");
-    changeColor("fddfd", 255, 0, 0);
+    changeColor("fddfd", 255, 255, 0);
     //changeColor("00:17:88:01:10:51:a6:fe-0b", 0, 255, 0); 
     //changeColor("20005E32", 255, 255, 255, 1000); 
     
@@ -23,11 +18,19 @@ try {
 }
 
 function getHueLamps(){ //returnerar ingenting just nu
-    http.get(config.hueIp+"/api/"+config.userName+"/lights", function(res) {
-          res.on('data', function (chunk) {
-            let object = JSON.parse(chunk);
-            console.log(object);
-          });
+    var options = {
+        host: config.hueIp,
+        path: "/api/"+config.userName+"/lights",
+        method: 'GET'
+    };
+    http.get(options, function(res) {
+      var chunks = [];
+      res.on('data', function(chunk) {
+        chunks.push(chunk);
+      }).on('end', function() {
+        var body = Buffer.concat(chunks);
+        console.log('BODY: ' + body);
+      })
     }).on('error', function(e) {
       console.log("Got error: " + e.message);
     });
