@@ -11,7 +11,8 @@ try {
     var hours = date.getHours();
     var minutes = date.getMinutes();
     console.log(hours + " : " + minutes);
-    getHueLamps();
+    //getHueLamps();
+    turnOff("00:17:88:01:10:51:a6:fe-0b");
     //changeColor("00:17:88:01:10:51:a6:fe-0b", 1000, 0, 255, 0); 
 
 //    setTimeout(() => {
@@ -33,7 +34,7 @@ try {
 }
 
 function getHueLamps(){ //returnerar ingenting just nu
-    http.get(config.hueIp+"api/"+config.userName+"/lights", function(res) {
+    http.get(config.hueIp+"/api/"+config.userName+"/lights", function(res) {
           res.on('data', function (chunk) {
             let object = JSON.parse(chunk);
             console.log(object);
@@ -63,6 +64,25 @@ function turnOff(lampId){
         blink1 = new Blink1(lampId);
         blink1.off()
         blink1.close();
+    }
+    else{
+        let req;
+
+        var bodyMessage = JSON.stringify({
+            "on":false
+        })
+        var headers = {
+            'Content-Type': 'application/json',
+            'Content-Length': bodyMessage.length
+        };
+        var options = {
+            host: config.hueIp,
+            path: "/api/"+config.userName+"/lights/1/state",
+            method: 'PUT',
+            headers: headers
+        };
+        var link = config.hueIp+"/api/"+config.userName+"/lights/1/state";
+        http.request(options).write(bodyMessage);
     }
     //här ska den köra med en else if mot philips hue istället
 }
