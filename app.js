@@ -1,10 +1,11 @@
 'use strict';
 let Blink1 = require('node-blink1');
+let config = require('./config.json')
 let blink1;
 
 
 try {
-    
+    console.log(config.userName);
     var date = new Date();
     var hours = date.getHours();
     var minutes = date.getMinutes();
