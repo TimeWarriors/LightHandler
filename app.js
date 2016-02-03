@@ -8,8 +8,8 @@ let blink1;
 try {
     //getHueLamps();
     //turnOff("00:17:88:01:10:51:a6:fe-0b");
-    changeColor("fddfd", 255, 255, 0);
-    changeBrightness("fdfdfd", 2);
+    changeColor("4", 0, 0, 255);
+    changeBrightness("4", 255);
     //changeColor("00:17:88:01:10:51:a6:fe-0b", 0, 255, 0); 
     //changeColor("20005E32", 255, 255, 255, 1000); 
     
@@ -48,7 +48,7 @@ function changeBrightness(lampId, brightness)
     };
     var options = {
         host: config.hueIp,
-        path: "/api/"+config.userName+"/lights/1/state",
+        path: "/api/"+config.userName+"/lights/"+lampId+"/state",
         method: 'PUT',
         headers: headers
     };
@@ -80,7 +80,7 @@ function changeColor(lampId, r, g, b, millisecondsToChange){
         };
         var options = {
             host: config.hueIp,
-            path: "/api/"+config.userName+"/lights/1/state",
+            path: "/api/"+config.userName+"/lights/"+lampId+"/state",
             method: 'PUT',
             headers: headers
         };
@@ -105,7 +105,7 @@ function turnOff(lampId){
         };
         var options = {
             host: config.hueIp,
-            path: "/api/"+config.userName+"/lights/1/state",
+            path: "/api/"+config.userName+"/lights/"+lampId+"/state",
             method: 'PUT',
             headers: headers
         };
