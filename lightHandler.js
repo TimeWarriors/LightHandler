@@ -5,55 +5,38 @@ let http = require('http');
 let blink1;
 let interval;
 
+function LightHandler()
+{
 
-try {
-    //getHueLamps();
-    //turnOff("00:17:88:01:10:51:a6:fe-0b");
-     changeColor("4", 250, 0, 0);
-    // changeBrightness("4", 255);
-    toggleWarning("4", true, 500);
-    setTimeout(function() {
-        toggleWarning("4", false);
-    }, 20000);
-    
-    //turnOff("4", true);
-    //changeColor("00:17:88:01:10:51:a6:fe-0b", 0, 255, 0); 
-    //changeColor("20005E32", 255, 255, 255, 1000); 
-    
-
-} catch(err) {
-   console.log(err);  // might get this if your USB port is weird/flaky
 }
-
-function getHueLamps(){ //returnerar ingenting just nu
-    var options = {
+LightHandler.prototype.getHueLamps = function(){ //returnerar ingenting just nu
+    let options = {
         host: config.hueIp,
         path: "/api/"+config.userName+"/lights",
         method: 'GET'
     };
     http.get(options, function(res) {
-      var chunks = [];
+      let chunks = [];
       res.on('data', function(chunk) {
         chunks.push(chunk);
       }).on('end', function() {
-        var body = Buffer.concat(chunks);
+        let body = Buffer.concat(chunks);
         console.log('BODY: ' + body);
       })
     }).on('error', function(e) {
       console.log("Got error: " + e.message);
     });
 }
-
-function changeBrightness(lampId, brightness)
+LightHandler.prototype.changeBrightness = function(lampId, brightness)
 {
-    var bodyMessage = JSON.stringify({
+    let bodyMessage = JSON.stringify({
         "bri": brightness
     })
-    var headers = {
+    let headers = {
         'Content-Type': 'application/json',
         'Content-Length': bodyMessage.length
     };
-    var options = {
+    let options = {
         host: config.hueIp,
         path: "/api/"+config.userName+"/lights/"+lampId+"/state",
         method: 'PUT',
@@ -62,7 +45,7 @@ function changeBrightness(lampId, brightness)
     http.request(options).write(bodyMessage);
 }
 
-function changeColor(lampId, r, g, b, millisecondsToChange){
+LightHandler.prototype.changeColor = function(lampId, r, g, b, millisecondsToChange){
     millisecondsToChange = millisecondsToChange || 1000;
     let blinkDevices = Blink1.devices();
     if(blinkDevices.indexOf(lampId) != -1)
@@ -73,19 +56,19 @@ function changeColor(lampId, r, g, b, millisecondsToChange){
     }
     else //här ska den köra med en else if mot philips hue istället
     {
-        var X = r * 0.664511 + g * 0.154324 + b * 0.162028;
-        var Y = r * 0.283881 + g * 0.668433 + b * 0.047685;
-        var Z = r * 0.000088 + g * 0.072310 + b * 0.986039;
-        var x = X / (X + Y + Z);
-        var y = Y / (X + Y + Z);
-        var bodyMessage = JSON.stringify({
+        let X = r * 0.664511 + g * 0.154324 + b * 0.162028;
+        let Y = r * 0.283881 + g * 0.668433 + b * 0.047685;
+        let Z = r * 0.000088 + g * 0.072310 + b * 0.986039;
+        let x = X / (X + Y + Z);
+        let y = Y / (X + Y + Z);
+        let bodyMessage = JSON.stringify({
             "xy": [x,y]
         })
-        var headers = {
+        let headers = {
             'Content-Type': 'application/json',
             'Content-Length': bodyMessage.length
         };
-        var options = {
+        let options = {
             host: config.hueIp,
             path: "/api/"+config.userName+"/lights/"+lampId+"/state",
             method: 'PUT',
@@ -94,7 +77,7 @@ function changeColor(lampId, r, g, b, millisecondsToChange){
         http.request(options).write(bodyMessage);
     }
 }
-function turnOff(lampId, status){
+LightHandler.prototype.turnOff = function(lampId, status){
     let blinkDevices = Blink1.devices();
     if(blinkDevices.indexOf(lampId) != -1)
     {
@@ -103,14 +86,14 @@ function turnOff(lampId, status){
         blink1.close();
     }
     else{
-        var bodyMessage = JSON.stringify({
+        let bodyMessage = JSON.stringify({
             "on": status     
         })
-        var headers = {
+        let headers = {
             'Content-Type': 'application/json',
             'Content-Length': bodyMessage.length
         };
-        var options = {
+        let options = {
             host: config.hueIp,
             path: "/api/"+config.userName+"/lights/"+lampId+"/state",
             method: 'PUT',
@@ -121,17 +104,18 @@ function turnOff(lampId, status){
     //här ska den köra med en else if mot philips hue istället
 }
 //lampid, bool on, blinkrate ms(optional defaults to 1000)
-function toggleWarning(lampId, on, blinkrate){
+LightHandler.prototype.toggleWarning = function(lampId, on, blinkrate){
+    let self = this;
     blinkrate = blinkrate || 1000;
-    var bri = 0;
+    let bri = 0;
     if(!on)
     {
         clearInterval(interval);
-        changeBrightness(lampId, 255)
+        self.changeBrightness(lampId, 255)
     }
     else{
             interval = setInterval(function(){
-            changeBrightness(lampId, bri);
+            self.changeBrightness(lampId, bri);
             if(bri == 0)
             {
                 bri = 255;
@@ -143,3 +127,5 @@ function toggleWarning(lampId, on, blinkrate){
         }, blinkrate);
     }
 }
+
+module.exports = LightHandler;
