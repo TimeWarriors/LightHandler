@@ -9,6 +9,7 @@ try {
     //getHueLamps();
     //turnOff("00:17:88:01:10:51:a6:fe-0b");
     changeColor("fddfd", 255, 255, 0);
+    changeBrightness("fdfdfd", 2);
     //changeColor("00:17:88:01:10:51:a6:fe-0b", 0, 255, 0); 
     //changeColor("20005E32", 255, 255, 255, 1000); 
     
@@ -34,6 +35,24 @@ function getHueLamps(){ //returnerar ingenting just nu
     }).on('error', function(e) {
       console.log("Got error: " + e.message);
     });
+}
+
+function changeBrightness(lampId, brightness)
+{
+    var bodyMessage = JSON.stringify({
+        "bri": brightness
+    })
+    var headers = {
+        'Content-Type': 'application/json',
+        'Content-Length': bodyMessage.length
+    };
+    var options = {
+        host: config.hueIp,
+        path: "/api/"+config.userName+"/lights/1/state",
+        method: 'PUT',
+        headers: headers
+    };
+    http.request(options).write(bodyMessage);
 }
 
 function changeColor(lampId, r, g, b, millisecondsToChange){
