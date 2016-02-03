@@ -8,8 +8,10 @@ let blink1;
 try {
     //getHueLamps();
     //turnOff("00:17:88:01:10:51:a6:fe-0b");
-    changeColor("4", 0, 0, 255);
-    changeBrightness("4", 255);
+    // changeColor("4", 200, 50, 0);
+    // changeBrightness("4", 255);
+    warningFlash("4");
+    //turnOff("4", true);
     //changeColor("00:17:88:01:10:51:a6:fe-0b", 0, 255, 0); 
     //changeColor("20005E32", 255, 255, 255, 1000); 
     
@@ -87,7 +89,7 @@ function changeColor(lampId, r, g, b, millisecondsToChange){
         http.request(options).write(bodyMessage);
     }
 }
-function turnOff(lampId){
+function turnOff(lampId, status){
     let blinkDevices = Blink1.devices();
     if(blinkDevices.indexOf(lampId) != -1)
     {
@@ -97,7 +99,8 @@ function turnOff(lampId){
     }
     else{
         var bodyMessage = JSON.stringify({
-            "on":false
+            "on": status
+           
         })
         var headers = {
             'Content-Type': 'application/json',
@@ -122,6 +125,22 @@ function warningFlash(lampId){
         blink1.writePatternLine(200, 0, 0, 0, 1);
         blink1.playLoop(0, 1, 10);
         blink1.close();
+    }
+    else
+    {
+        var bri = 0;
+        setInterval(function(){
+            changeBrightness(lampId, bri);
+            if(bri == 0)
+            {
+                bri = 255;
+            }
+            else
+            {
+                bri = 0;
+            }
+        }, 1000);
+        //setTimeout(setInterval(changeBrightness(lampId, 255), 3000), 1500);     
     }
     //här ska den köra med en else if mot philips hue istället
 }
