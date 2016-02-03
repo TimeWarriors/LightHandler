@@ -3,14 +3,19 @@ let Blink1 = require('node-blink1');
 let config = require('./config.json')
 let http = require('http');
 let blink1;
+let interval;
 
 
 try {
     //getHueLamps();
     //turnOff("00:17:88:01:10:51:a6:fe-0b");
-    // changeColor("4", 200, 50, 0);
+     changeColor("4", 250, 0, 0);
     // changeBrightness("4", 255);
-    warningFlash("4");
+    toggleWarning("4", true, 500);
+    setTimeout(function() {
+        toggleWarning("4", false);
+    }, 20000);
+    
     //turnOff("4", true);
     //changeColor("00:17:88:01:10:51:a6:fe-0b", 0, 255, 0); 
     //changeColor("20005E32", 255, 255, 255, 1000); 
@@ -99,8 +104,7 @@ function turnOff(lampId, status){
     }
     else{
         var bodyMessage = JSON.stringify({
-            "on": status
-           
+            "on": status     
         })
         var headers = {
             'Content-Type': 'application/json',
@@ -116,20 +120,17 @@ function turnOff(lampId, status){
     }
     //här ska den köra med en else if mot philips hue istället
 }
-function warningFlash(lampId){
-    let blinkDevices = Blink1.devices();
-    if(blinkDevices.indexOf(lampId) != -1)
+//lampid, bool on, blinkrate ms(optional defaults to 1000)
+function toggleWarning(lampId, on, blinkrate){
+    blinkrate = blinkrate || 1000;
+    var bri = 0;
+    if(!on)
     {
-        blink1 = new Blink1(lampId);
-        blink1.writePatternLine(200, 255, 0, 0, 0);
-        blink1.writePatternLine(200, 0, 0, 0, 1);
-        blink1.playLoop(0, 1, 10);
-        blink1.close();
+        clearInterval(interval);
+        changeBrightness(lampId, 255)
     }
-    else
-    {
-        var bri = 0;
-        setInterval(function(){
+    else{
+            interval = setInterval(function(){
             changeBrightness(lampId, bri);
             if(bri == 0)
             {
@@ -139,8 +140,6 @@ function warningFlash(lampId){
             {
                 bri = 0;
             }
-        }, 1000);
-        //setTimeout(setInterval(changeBrightness(lampId, 255), 3000), 1500);     
+        }, blinkrate);
     }
-    //här ska den köra med en else if mot philips hue istället
 }
