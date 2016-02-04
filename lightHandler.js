@@ -56,6 +56,7 @@ LightHandler.prototype.changeColor = function(lampId, r, g, b, millisecondsToCha
     }
     else //här ska den köra med en else if mot philips hue istället
     {
+        //convert rgb to xy
         let X = r * 0.664511 + g * 0.154324 + b * 0.162028;
         let Y = r * 0.283881 + g * 0.668433 + b * 0.047685;
         let Z = r * 0.000088 + g * 0.072310 + b * 0.986039;
